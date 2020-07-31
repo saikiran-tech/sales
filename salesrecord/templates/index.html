@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static}
+{% block body %}
+{% if request.user.is_authenticated %}
+<div class="add_buttons">
+
+    <div class="button-group">
+      <a href="{% url 'display_records' %}" class="btn btn-primary btn-sm btn-trim" role="button"> Sales records</a>
+      <a href="{% url 'add_record' %}" class="btn btn-warning btn-sm btn-pad" role="button"> Add record</a>
+        <a href="{% url 'download_record' %}" class="btn btn-primary btn-sm btn-pad" role="button"> Download</a>
+    </div>
+  </div>
+{% endif %}
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Region</th>
+        <th>Country</th>
+        <th>Item Type</th>
+        <th>Sales Channel</th>
+        <th>Order Priority</th>
+        <th>Order Date</th>
+        <th>Order ID</th>
+        <th>Ship Date</th>
+        <th>Units Sold</th>
+        <th>Unit Price</th>
+        <th>Unit Cost</th>
+        <th>Total Revenue</th>
+        <th>Total Cost</th>
+        <th>Total Profit</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for item in page_obj %}
+
+      <tr>
+        <td>{{ item.id}}</td>
+        <td>{{ item.Region}}</td>
+        <td>{{ item.Country }}</td>
+        <td>{{ item.Item_type }} $</td>
+        <td>{{ item.Sales_channel }}</td>
+        <td>{{ item.Order_priority }}</td>
+        <td>{{ item.Order_date}}</td>
+        <td>{{ item.Order_ID }}</td>
+        <td>{{ item.Ship_date }}</td>
+        <td>{{ item.Units_sold }}</td>
+        <td>{{ item.Unit_price }}</td>
+        <td>{{ item.Unit_cost }}</td>
+        <td>{{ item.Total_cost }}</td>
+        <td>{{ item.Total_revenue }}</td>
+
+        <td>
+            <a href="{% url 'edit_record' item.id %}" class="btn btn-warning btn-sm" role="button" aria-pressed="true" > Edit</a>
+            <a href="{% url 'delete_record' item.id%}" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Delete</a>
+        </td>
+
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+  {% endblock %}
